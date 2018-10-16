@@ -48,6 +48,7 @@ public:
   A() {
     Attribute sth;
     m_attrs.push_back(sth);
+    m_attrs.push_back(sth);
   }
   std::vector<Attribute> &getAttrs() { return m_attrs; }
 

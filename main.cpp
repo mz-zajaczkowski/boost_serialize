@@ -92,8 +92,8 @@ private:
 };
 
 using namespace boost::property_tree;
-template <typename T> void serialize(T &object, ptree &root) = delete;
-template <typename T> T &deserialize(ptree &root) = delete;
+template <typename T> void serialize(T &object, ptree &root);
+template <typename T> T &deserialize(ptree &root);
 
 template <template <class...> class Container, class T>
 void serialize(Container<T> &cont, ptree &root) {
@@ -111,14 +111,18 @@ void serialize(Container<T> &cont, ptree &root) {
 //}
 
 template <> void serialize(Attribute &object, ptree &root) {
-  root.put("isSerializable", object.isSerializable());
-  root.put("isWeird", object.isWeird());
-  root.put("isSthElse", object.isSthElse());
+    ptree attrTree;
+  attrTree.put("isSerializable", object.isSerializable());
+  attrTree.put("isWeird", object.isWeird());
+  attrTree.put("isSthElse", object.isSthElse());
+  root.add_child("Attribute", attrTree);
 }
 
 template <> void serialize(B &object, ptree &root) {
   ptree bTree;
-  serialize(object.getA(), bTree);
+  ptree aTree;
+  serialize(object.getA(), aTree);
+  bTree.add_child("ATYPE", aTree);
   root.add_child("BTYPE", bTree);
 }
 
